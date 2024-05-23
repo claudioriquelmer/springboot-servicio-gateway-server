@@ -15,3 +15,6 @@ spring:
           - Path=/api/items/**
         filters:
           - StripPrefix=2
+          - AddRequestHeader=token-request, 123456
+          - AddResponsetHeader=response, 12345678
+          - AddRequestParameter=nombre, NDrake

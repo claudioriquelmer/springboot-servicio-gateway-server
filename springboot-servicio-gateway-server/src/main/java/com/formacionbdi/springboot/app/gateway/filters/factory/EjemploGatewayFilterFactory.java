@@ -22,7 +22,7 @@ public class EjemploGatewayFilterFactory
 
 	@Override
 	public GatewayFilter apply(Configuration config) {
-		return new OrderedGatewayFilter((exchange, chain) -> {
+		return (exchange, chain) -> {
 
 			logger.info("Ejecutando pre gateway filter factory : " + config.mensaje);
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
@@ -33,7 +33,7 @@ public class EjemploGatewayFilterFactory
 
 				logger.info("Ejecutando post gateway filter factory : " + config.mensaje);
 			}));
-		}, 2);
+		};
 	}
 
 	@Override
