@@ -17,8 +17,15 @@ public class EjemploGlobalFilter implements GlobalFilter {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		logger.info("Ejecutando Filtro pre");
+		exchange.getRequest().mutate().headers(h -> h.add("token", "123456"));
+		
 		return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 			logger.info("Ejecutando filtro Post");
+			
+			Optional.ofNullable(exchange.getRequest().getHeaders().getFirst("token")).ifPresent(valor -> {
+				exchange.getResponse().getHeaders().add("token", valor);
+			})
+			
 			exchange.getResponse().getCookies().add("color", ResponseCookie.from("color", "rojo").build());
 			exchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
 		}));
