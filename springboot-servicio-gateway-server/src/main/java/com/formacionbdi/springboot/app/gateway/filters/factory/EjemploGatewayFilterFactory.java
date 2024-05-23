@@ -1,5 +1,8 @@
 package com.formacionbdi.springboot.app.gateway.filters.factory;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -19,7 +22,7 @@ public class EjemploGatewayFilterFactory
 
 	@Override
 	public GatewayFilter apply(Configuration config) {
-		return (exchange, chain) -> {
+		return new OrderedGatewayFilter((exchange, chain) -> {
 
 			logger.info("Ejecutando pre gateway filter factory : " + config.mensaje);
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
@@ -30,7 +33,17 @@ public class EjemploGatewayFilterFactory
 
 				logger.info("Ejecutando post gateway filter factory : " + config.mensaje);
 			}));
-		};
+		}, 2);
+	}
+
+	@Override
+	public String name() {
+		return "EjemploCookie";
+	}
+
+	@Override
+	public List<String> shortcutFieldOrder() {
+		return Arrays.asList("mensaje", "cookieNombre", "cookieValor");
 	}
 
 	public static class Configuracion {
