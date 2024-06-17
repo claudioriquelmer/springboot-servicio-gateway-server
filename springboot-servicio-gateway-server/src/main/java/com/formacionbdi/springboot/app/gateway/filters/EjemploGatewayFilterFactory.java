@@ -1,4 +1,4 @@
-package com.formacionbdi.springboot.app.gateway.filters.factory;
+package com.formacionbdi.springboot.app.gateway.filters;
 
 import java.util.Arrays;
 import java.util.List;
